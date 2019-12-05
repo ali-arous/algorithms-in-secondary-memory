@@ -7,14 +7,6 @@ package algorithmsinsecondarymemory;
 
 import io.InputStream;
 import io.OutputStream;
-import io.BufferedCharInputStream;
-import io.BufferedCharOutputStream;
-import io.CharInputStream;
-import io.CharOutputStream;
-import io.LineInputStream;
-import io.LineOutputStream;
-import io.MappedInputStream;
-import io.MappedOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -23,6 +15,9 @@ import java.util.Queue;
  *
  * @author webma
  */
+
+// New DataType to store a line next to its stream index. (Useful for 'merge' method)
+// So whenever a line is written to desk, its corresponding stream is read again.
 class LineOfStream{
     String text;
     int streamIndex;
@@ -38,32 +33,63 @@ public class MultiWayMergeSort {
     
     private static final String OUTPUT_FOLDER_PATH = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\outputs\\";
     
-    private static InputStream r;
-    private static OutputStream w;
+    private InputStream r;
+    private OutputStream w;
+    IOFactory factory; // this object has methods that create input/output streams, according to a given method out of the 4 available
     
-    public static void exsort(String f, int k, int M, int d){
-        r = new LineInputStream(INPUT_FOLDER_PATH+f);
-        String line=r.readln();
+    // Use this constructor with the parameter: "CharStream" /or/ "1" for the first method, 
+    // and with the parameter "LineStream" /or/ "2" for the second method.
+    // DO NOT USE IT FOR METHODS 3 and 4!
+    public MultiWayMergeSort(String method){
+        factory = new IOFactory(method);
+    }
+
+        
+    // Use this constructor with the parameters:
+    // method = "BufferedCharStream" or "3" for the third method.
+    // method = "MappedStream" or "4" for the fourth method.
+    // B = the size of the buffer (for both third and fourth methods).
+    public MultiWayMergeSort(String method, int B){
+        factory = new IOFactory(method, B);
+    }
+    
+    public void exsort(String f, int k, int M, int d){
+        // open input file for reading
+        r = factory.makeReader(INPUT_FOLDER_PATH+f);
+        //r = new LineInputStream(INPUT_FOLDER_PATH+f);
         ArrayList<String> lines = new ArrayList<>();
         //ArrayList<InputStream> chunkFiles = new ArrayList<>();
         Queue<InputStream> chunkFiles = new LinkedList<>();
         long chunkSize=0;
         int ofc=1;
+        
+        String line=r.readln();
+        // repeat until end of file
         while(!r.end_of_stream()){
+            
+            // we keep in memory as many lines as their total size in bytes <=M
             if(chunkSize+line.getBytes().length<=M){
                 chunkSize+=line.getBytes().length;
                 //System.out.println("Added to lines: "+line);
                 lines.add(line);
             }else{
+                // if the next read line is going to overflow the memory,
+                // we write the memory content of lines (sorted) to disk
                 lines.sort((String l1, String l2)-> { return cmp(l1,l2,k); });
                 String chunkFileName = "chunk"+(ofc++)+".txt";
-                w = new LineOutputStream(OUTPUT_FOLDER_PATH+chunkFileName);
+                w = factory.makeWriter(OUTPUT_FOLDER_PATH+chunkFileName);
+                //w = new LineOutputStream(OUTPUT_FOLDER_PATH+chunkFileName);
                 for(String l:lines)
                     w.writeln(l);                
                 w.close();
-                chunkFiles.add(new LineInputStream(OUTPUT_FOLDER_PATH+chunkFileName));
+                
+                // we record the generated file, so that we can read it again in merge step.
+                chunkFiles.add(factory.makeReader(OUTPUT_FOLDER_PATH+chunkFileName));
+                //chunkFiles.add(new LineInputStream(OUTPUT_FOLDER_PATH+chunkFileName));
                 lines.clear();
                 chunkSize=0;
+                
+                // after clearing the memory, we can accept the new read line and loop again.
                 if(line.getBytes().length<=M){
                     lines.add(line);
                     chunkSize+=line.getBytes().length;
@@ -77,17 +103,23 @@ public class MultiWayMergeSort {
             line=r.readln();
         }
         
+        // if the input stream reached end of file (while loop break condition) 
+        // but there were remaining lines in memory, we write them to disk and clear the memory.
         if(lines.size()>0){
-            lines.sort((String l1, String l2)-> {return cmp(l1,l2,k);});
+            lines.sort((String l1, String l2)-> { return cmp(l1,l2,k); });
             String chunkFileName = "chunk"+(ofc++)+".txt";
-            w = new LineOutputStream(OUTPUT_FOLDER_PATH+chunkFileName);
+            w = factory.makeWriter(OUTPUT_FOLDER_PATH+chunkFileName);
+            //w = new LineOutputStream(OUTPUT_FOLDER_PATH+chunkFileName);
             for(String l:lines)
                 w.writeln(l);                
             w.close();
-            chunkFiles.add(new LineInputStream(OUTPUT_FOLDER_PATH+chunkFileName));
+            chunkFiles.add(factory.makeReader(OUTPUT_FOLDER_PATH+chunkFileName));
+            //chunkFiles.add(new LineInputStream(OUTPUT_FOLDER_PATH+chunkFileName));
         }
         System.out.println("Phase #1 done! Check generated chunk files..");
         
+        // here we loop over the list of generated files, and merge each d of them at once
+        // until only one file remains (the final output file of sorted lines)
         int counter=1;
         while(chunkFiles.size()>1){
             merge(d, k, counter++, chunkFiles);
@@ -96,30 +128,36 @@ public class MultiWayMergeSort {
     }
     
     
-    private static void merge(int d, int k, int iter, Queue<InputStream> q){
+    private void merge(int d, int k, int iter, Queue<InputStream> q){
         InputStream[] istreams;
         Queue<LineOfStream> buff = new PriorityQueue<LineOfStream>(  (LineOfStream line1, LineOfStream line2)-> {return cmp(line1.text,line2.text,k);} );
+        
+        // we take first d lines from the queue or as many as left if their count is < d.
         int loopLimit = q.size() > d ? d : q.size();
-        istreams=new LineInputStream[loopLimit];
+        istreams=new InputStream[loopLimit];
 
         for(int i=0;i<loopLimit;i++){
             istreams[i]=q.poll();
         }
         
-        boolean allFinished=false;
+//        boolean allFinished=false;
         
         String partialOutputFileName="partial_output_"+iter+".txt";
-        OutputStream o=new LineOutputStream(OUTPUT_FOLDER_PATH+partialOutputFileName);
+        OutputStream o = factory.makeWriter(OUTPUT_FOLDER_PATH+partialOutputFileName);
+        //OutputStream o=new LineOutputStream(OUTPUT_FOLDER_PATH+partialOutputFileName);
 //        while(!allFinished){
 //            allFinished=true;
             for(int i=0;i<loopLimit;i++){
                 if(!istreams[i].end_of_stream()){
+                    // from each stream, read a line and add it to the priority queue
                     String l=istreams[i].readln();
                     if(l.length()>0)buff.add(new LineOfStream(l, i));
                 }
 //                allFinished = allFinished && istreams[i].end_of_stream();
             }
 
+            // as long as the priority queue has content, write Line_h (the line at its head) to disk
+            // and read a new line from Line_h's same stream. (if its stream it not exhausted already!).
             while(!buff.isEmpty()){
                 LineOfStream los = buff.poll();
                 o.writeln(los.text);
@@ -130,8 +168,13 @@ public class MultiWayMergeSort {
             }
  //       }
         o.close();
+        
+        // after we merged the first d line and stored their result to disk, 
+        // we read their merge result back from disk with an input stream 
+        // and add it to streams queue again.       
         System.out.println("Finished writing file: "+partialOutputFileName);
-        InputStream newis=new LineInputStream(OUTPUT_FOLDER_PATH+partialOutputFileName);
+        InputStream newis = factory.makeReader(OUTPUT_FOLDER_PATH+partialOutputFileName);
+        //InputStream newis=new LineInputStream(OUTPUT_FOLDER_PATH+partialOutputFileName);
         q.add(newis);
         
     }
@@ -146,7 +189,7 @@ public class MultiWayMergeSort {
         }  
     }
     
-    public static int cmp(String s1, String s2, int k){
+    private static int cmp(String s1, String s2, int k){
         String[] arr1=s1.split(",");
         String[] arr2=s2.split(",");
         

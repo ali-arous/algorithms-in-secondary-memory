@@ -57,8 +57,18 @@ public class AlgorithmsInSecondaryMemory {
           //final long duration = System.currentTimeMillis() - startTime;
           //System.out.println("the running time is "+"<"+duration+">"+" milliseconds");
           
+          MultiWayMergeSort mwms=new MultiWayMergeSort("CharStream");
+          mwms.exsort("keyword.csv", 0, 1000, 5);
           
-          MultiWayMergeSort.exsort("keyword.csv", 0, 1000, 5);
+          //MultiWayMergeSort mwms=new MultiWayMergeSort("LineStream");
+          //mwms.exsort("keyword.csv", 0, 1000, 5);
+          
+          //MultiWayMergeSort mwms=new MultiWayMergeSort("BufferedCharStream",5);
+          //mwms.exsort("keyword.csv", 0, 1000, 5);
+
+          //MultiWayMergeSort mwms=new MultiWayMergeSort("MappedStream",5);
+          //mwms.exsort("keyword.csv", 0, 1000, 5);         
+          
           //Testing.compareTwoFiles("partial_output_927.txt", "keyword.csv");
           
 
