@@ -18,7 +18,6 @@ import io.LineOutputStream;
 import io.MappedInputStream;
 import io.MappedOutputStream;
 import algorithmsinsecondarymemory.ExperimentsSet;
-import com.sun.glass.ui.SystemClipboard;
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -30,6 +29,17 @@ public class AlgorithmsInSecondaryMemory {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        // set machine input folder path
+        ExperimentsSet.init();
+
+        // experiment #1
+        ExperimentsSet.sequential_reading();
+
+
+
+
+
 
 /**
  * uncomment the relevant testMethod() call when you want to check if a method
@@ -57,9 +67,9 @@ public class AlgorithmsInSecondaryMemory {
           //final long duration = System.currentTimeMillis() - startTime;
           //System.out.println("the running time is "+"<"+duration+">"+" milliseconds");
           
-          MultiWayMergeSort mwms=new MultiWayMergeSort("CharStream");
-          mwms.exsort("keyword.csv", 0, 1000, 5);
-          
+//          MultiWayMergeSort mwms = new MultiWayMergeSort("CharStream");
+//          mwms.exsort("keyword.csv", 0, 1000, 5);
+          //  System.out.println("Hello World");
           //MultiWayMergeSort mwms=new MultiWayMergeSort("LineStream");
           //mwms.exsort("keyword.csv", 0, 1000, 5);
           
@@ -67,10 +77,20 @@ public class AlgorithmsInSecondaryMemory {
           //mwms.exsort("keyword.csv", 0, 1000, 5);
 
           //MultiWayMergeSort mwms=new MultiWayMergeSort("MappedStream",5);
-          //mwms.exsort("keyword.csv", 0, 1000, 5);         
-          
+          //mwms.exsort("keyword.csv", 0, 1000, 5);
           //Testing.compareTwoFiles("partial_output_927.txt", "keyword.csv");
-          
+
+
+
+
+//        Testing.clearOutputFolder();
+//        for (int i=1;i<=4;i+=1) {
+//            System.out.println("\n\nExperiment #"+i+":");
+//            long start = System.currentTimeMillis();
+//            Testing.testMethod(i);
+//            long end = System.currentTimeMillis();
+//            System.out.println("Time elapsed: "+(end-start));
+//        }
 
     }
     

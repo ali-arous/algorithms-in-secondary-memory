@@ -8,6 +8,7 @@ package io;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.io.IOException;
  */
 public abstract class InputStream {
     protected long pos;
-    protected File f;
+    protected RandomAccessFile f;
     protected FileReader reader;
     protected boolean endOfStream;
     
@@ -26,10 +27,10 @@ public abstract class InputStream {
     public InputStream(String path){
         this();
         if(this.open(path)){
-            System.out.println("File \'"+extractName(path)+"\' is open..");
+            //System.out.println("File \'"+extractName(path)+"\' is open..");
         }
     }
-    private String extractName(String path){
+    protected String extractName(String path){
         int loc = path.lastIndexOf('\\');
         if (loc==-1)
             loc = path.lastIndexOf('/');
@@ -37,9 +38,9 @@ public abstract class InputStream {
     }
     
     public boolean open(String path){
-        f = new File(path);
         try{
-            this.reader = new FileReader(f);
+            f = new RandomAccessFile(path,"r");
+            this.reader = new FileReader(f.getFD());
         } catch (IOException ex){
             System.err.println("The following error is encountred while opening the file:\n"+ex.getMessage());
         }
@@ -51,14 +52,19 @@ public abstract class InputStream {
             if(pos<0)
                 throw new IOException("Seek position outside file boundaries.");            
             this.pos = pos;
-            this.reader = new FileReader(f);
-            this.reader.skip(pos);
+            f.seek(pos);
+            this.reader = new FileReader(f.getFD());
         }catch (IOException ex){
             System.err.println("The following error is encountred while seeking inside the file:\n"+ex.getMessage());
         }
     }
     public long size(){
-     return this.f.length();
+        try {
+            return this.f.length();
+        }catch(IOException ex){
+            System.err.println("The following error is encountred while returning the length of the file:\n"+ex.getMessage());
+            return 0;
+        }
     }
     
     public abstract String readln();

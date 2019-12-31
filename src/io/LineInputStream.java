@@ -46,7 +46,7 @@ public class LineInputStream extends InputStream{
         String line = "";
         try{
             if( (line = this.br.readLine()) != null )
-                return line;
+                return line;//+"\r";
             else
                 this.endOfStream=true;
         } catch(IOException ex){

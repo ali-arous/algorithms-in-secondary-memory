@@ -27,7 +27,7 @@ public class MappedInputStream extends InputStream{
     public MappedInputStream(int buffer){
         super();
         this.round=1;
-        this.fileSize=0;
+        this.fileSize=Long.MAX_VALUE;
         if(buffer>0) 
             this.B = buffer;
         else
@@ -49,12 +49,18 @@ public class MappedInputStream extends InputStream{
                 this.buff  = fc.map(FileChannel.MapMode.READ_ONLY, 0, B);
             else
                 this.buff  = fc.map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
+            //System.out.println("File \'"+extractName(path)+"\' is open..");
         } catch (IOException ex){
             System.err.println("The following error is encountred while opening the file:\n"+ex.getMessage());
         }        
         return true;
     }
-    
+
+    @Override
+    public long size(){
+        return this.fileSize;
+    }
+
     @Override
     public void seek(long pos){
         try{
@@ -107,5 +113,5 @@ public class MappedInputStream extends InputStream{
         if(this.fileSize - (round*B+pos-this.buff.remaining())==0)
             this.endOfStream=true;
         return new String(s.toByteArray());
-    }    
+    }
 }

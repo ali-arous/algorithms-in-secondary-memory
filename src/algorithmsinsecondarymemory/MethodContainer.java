@@ -5,7 +5,6 @@
  */
 package algorithmsinsecondarymemory;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.VoidType;
 import io.BufferedCharInputStream;
 import io.BufferedCharOutputStream;
 import io.CharInputStream;
@@ -23,64 +22,95 @@ import java.util.Random;
  *
  * @author epcs
  */
-public class Method {
-    public static final String INPUT_FOLDER_PATH = "C:\\Users\\epcs\\Downloads\\imdb\\";
+public class MethodContainer {
+    public static String INPUT_FOLDER_PATH = "C:\\Users\\epcs\\Downloads\\imdb\\";
     
-    public static final String OUTPUT_FOLDER_PATH = "C:\\Users\\epcs\\Downloads\\AlgorithmsInSecondaryMemory\\AlgorithmsInSecondaryMemory\\test\\";
+    public static String OUTPUT_FOLDER_PATH = "C:\\Users\\epcs\\Downloads\\AlgorithmsInSecondaryMemory\\AlgorithmsInSecondaryMemory\\test\\";
     
-    public static final String INPUT_FILE_NAME ="keyword.csv";
+    public static String INPUT_FILE_NAME ="keyword.csv";
     
-    public static final String OUTPUT_FILE_NAME_PREFIX ="test";
+    public static String OUTPUT_FILE_NAME_PREFIX ="test";
     
-    public static final int B1 = 30;
+    public static int B1 = 30;
     
-    public static final int B2 = 5;
+    public static int B2 = 5;
     
-    
-    
-    public static int Line_read (){
-        InputStream r;
-        r = new LineInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
-         int length = 0 ;
-         String OutString ; 
-        while ( ! r.end_of_stream()){   
-          length = length+ r.readln().length() ;
-        }
-        return length ;
-        }
-    
-    public static int char_read(){
-        InputStream r;
-        r = new CharInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
-        int length = 0 ;
-        String OutString ;
-        while ( ! r.end_of_stream()){
-           length = length+ r.readln().length() ;
-        }
-         return length ;
+    public static void setInputFolderPath(String s){
+        INPUT_FOLDER_PATH = s;
     }
-     public static int Buffer_read(){
-        InputStream r;
-        r = new BufferedCharInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME,B1);
-        int length = 0 ;
-        String OutString ;
-        while ( ! r.end_of_stream()){
-          length = length+ r.readln().length() ;
-        }
-         return length ;
+
+    public static void setOutputFolderPath(String s){
+        OUTPUT_FOLDER_PATH = s;
     }
-    
-     public static int mapping_read(){
-        InputStream r;
-        r = new MappedInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME,B1);
-        int length = 0 ;
-        String OutString ;
-        while ( ! r.end_of_stream()){
-           length = length+ r.readln().length() ;
-        }
-         return length ;
-         
+
+    public static void setInputFileName(String s){
+        INPUT_FILE_NAME = s;
     }
+
+    public static void setOutputFileNamePrefix(String s){
+        OUTPUT_FILE_NAME_PREFIX = s;
+    }
+
+    public static void setB1(int val){
+        B1 = val;
+    }
+
+    public static void setB2(int val){
+        B2 = val;
+    }
+
+    public static long getFileSize(String file){
+        InputStream r = new LineInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
+        return r.size();
+    }
+
+    public static long lineRead() {
+        InputStream r;
+        r = new LineInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
+        long length = 0;
+
+        while (!r.end_of_stream()) {
+            length = length + r.readln().length();
+        }
+        return length;
+    }
+
+    public static long charRead() {
+        InputStream r;
+        r = new CharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
+        long length = 0;
+
+        while (!r.end_of_stream()) {
+            length = length + r.readln().length();
+        }
+        return length;
+    }
+
+    public static long bufferRead() {
+        InputStream r;
+        r = new BufferedCharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B1);
+        long length = 0;
+
+        while (!r.end_of_stream()) {
+            length = length + r.readln().length();
+        }
+        return length;
+    }
+
+    public static long mappingRead() {
+        InputStream r;
+        r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B1);
+        long length = 0;
+
+        while (!r.end_of_stream()) {
+            length = length + r.readln().length();
+        }
+        return length;
+
+    }
+
+
+
      public static int mapping_readRandom(){
         InputStream r;
         r = new MappedInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME,B1);
@@ -275,23 +305,6 @@ public class Method {
       public static void extsort (){
           
       }
-    public static void main(String[] args) {
-      //int M =  Line_read();
-      //int M2 = char_read();
-      //int M3 = Buffer_read();
-      //int M4= mapping_read();
-        // System.out.println(M2);
-         //System.out.println(M);
-         //System.out.println(M3);
-         //System.out.println(M4);
-         
-      //   line_read_write();
-      
-        //ListToString();
-        //char_read_write();
-        line_read_write_All();
-         
-    }
 }
 
 

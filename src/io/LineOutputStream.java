@@ -22,6 +22,7 @@ public class LineOutputStream extends OutputStream{
     
     public LineOutputStream(String path){
         super(path);
+        System.out.println("LineOutputStream object initiated..");
         this.bw = new BufferedWriter(this.writer);
     }
     
@@ -41,7 +42,7 @@ public class LineOutputStream extends OutputStream{
         }catch(IOException ex){
             System.err.println("The following error is encountred while writing to the file:\n"+ex.getMessage());
         }
-        System.out.println("- wrote to file:  "+s);
+        //System.out.println("- wrote to file:  "+s);
     }
 
     @Override
