@@ -20,7 +20,7 @@ import java.lang.invoke.MethodHandle;
 public class ExperimentsSet {
 
     static String FolderPath = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\";
-    static String[] listOfFiles = {"cast_info.csv","title.csv","keyword.csv","company_name.csv","title.csv", "cast_info.csv"};
+    static String[] listOfFiles = {"keyword.csv","company_name.csv","title.csv", "cast_info.csv"};
 
     public static void init(){
         System.out.println("Initializing Experiments Set..");
@@ -38,11 +38,11 @@ public class ExperimentsSet {
             System.out.println("\nConsidering File: ["+fileName+"]  Of Size: ["+size+"] Byte");
             long output=0, st=0, ed=0;
 
-//            st = System.currentTimeMillis(); output = MethodContainer.charRead(); ed = System.currentTimeMillis();
-//            System.out.println("\n    Method: [Char Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
-//
-//            st = System.currentTimeMillis(); output = MethodContainer.lineRead(); ed = System.currentTimeMillis();
-//            System.out.println("\n    Method: [Line Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
+            st = System.currentTimeMillis(); output = MethodContainer.charRead(); ed = System.currentTimeMillis();
+            System.out.println("\n    Method: [Char Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
+
+            st = System.currentTimeMillis(); output = MethodContainer.lineRead(); ed = System.currentTimeMillis();
+            System.out.println("\n    Method: [Line Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
 
             int[] bVal={0,0,0,0,0};
             bVal[0] = (int)((size/100.0) * 0.001);
@@ -53,12 +53,9 @@ public class ExperimentsSet {
 
             System.out.println("\n    Method: [Buffered Reader]");
             for(int b: bVal){
-                b = (int)((size/100) * 80);
-                System.out.println(b);
                 MethodContainer.setB1(b);
                 st = System.currentTimeMillis(); output = MethodContainer.bufferRead(); ed = System.currentTimeMillis();
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
-                break;
             }
 
             System.out.println("\n    Method: [Mapped Reader]");
@@ -68,7 +65,6 @@ public class ExperimentsSet {
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
             }
             System.out.println("---------------------------------------------\n\n");
-            break;
         }
 
 
