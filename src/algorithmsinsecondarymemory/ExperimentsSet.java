@@ -57,8 +57,7 @@ public class ExperimentsSet {
                 //b = 354534285;
                 //b = 177267142;
                 //b = 204800;
-                MethodContainer.setB1(b);
-                st = System.currentTimeMillis(); output = MethodContainer.bufferRead(); ed = System.currentTimeMillis();
+                st = System.currentTimeMillis(); output = MethodContainer.bufferRead(b); ed = System.currentTimeMillis();
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
                 //break;
             }
@@ -71,8 +70,7 @@ public class ExperimentsSet {
                 //b = 177267142;
                 //b = 88633571;
                 //b = 1418;
-                MethodContainer.setB2(b);
-                st = System.currentTimeMillis(); output = MethodContainer.mappingRead(); ed = System.currentTimeMillis();
+                st = System.currentTimeMillis(); output = MethodContainer.mappingRead(b); ed = System.currentTimeMillis();
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
             //break;
             }

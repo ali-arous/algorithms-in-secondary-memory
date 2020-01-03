@@ -68,66 +68,46 @@ public class MethodContainer {
         return r.size();
     }
 
-    public static long lineRead() {
-        InputStream r;
-        r = new LineInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
-        long length = 0;
-
-        while (!r.end_of_stream()) {
-            length = length + r.readln().length();
+    public static int length(InputStream sreader){
+        int sum = 0;
+        while (!sreader.end_of_stream()) {
+            sum = sum + sreader.readln().length();
         }
-        r.close();
-        return length;
+        sreader.close();
+        return sum;
+    }
+    public static int lineRead() {
+        InputStream r = new LineInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
+        return length(r);
     }
 
     public static long charRead() {
-        InputStream r;
-        r = new CharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
-        long length = 0;
-
-        while (!r.end_of_stream()) {
-            length = length + r.readln().length();
-        }
-        r.close();
-        return length;
+        InputStream r = new CharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
+        return length(r);
     }
 
-    public static long bufferRead() {
-        InputStream r;
-        r = new BufferedCharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B1);
-        long length = 0;
-
-        while (!r.end_of_stream()) {
-            length = length + r.readln().length();
-        }
-        r.close();
-        return length;
+    public static long bufferRead(int b) {
+        InputStream r = new BufferedCharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, b);
+        return length(r);
     }
 
-    public static long mappingRead() {
-        InputStream r;
-        r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B2);
-        long length = 0;
-        while (!r.end_of_stream()) {
-            length = length + r.readln().length();
-        }
-        r.close();
-        return length;
+    public static long mappingRead(int b) {
+        InputStream r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, b);
+        return length(r);
     }
+
 
     public static int randjump(InputStream sreader){
         int sum = 0;
         Random rand = new Random();
         int fileLen = (int)sreader.size();
-        //System.out.println("For j = "+j);
+
         for(int i=0;i<j;i++){
             int r = rand.nextInt(fileLen);
             sreader.seek(r);
-            String s = sreader.readln();
-            //System.out.println("i#"+i+": "+s);
-            sum+=s.length();
-            //sum+=sreader.readln().length();
+            sum+=sreader.readln().length();
         }
+        sreader.close();
         return sum;
     }
 
