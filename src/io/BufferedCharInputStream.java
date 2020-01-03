@@ -134,4 +134,13 @@ public class BufferedCharInputStream extends InputStream{
         //System.out.println("[Read end]");
         return s;
     }
+
+    public void close(){
+        try{
+            sreader.close();
+            f.close();
+        }catch(IOException ex){
+            System.err.println(ex.getMessage());
+        }
+    }
 }

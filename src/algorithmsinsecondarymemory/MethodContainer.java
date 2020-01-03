@@ -34,7 +34,9 @@ public class MethodContainer {
     public static int B1 = 30;
     
     public static int B2 = 5;
-    
+
+    public static int j = 0;
+
     public static void setInputFolderPath(String s){
         INPUT_FOLDER_PATH = s;
     }
@@ -59,6 +61,8 @@ public class MethodContainer {
         B2 = val;
     }
 
+    public static void setJ(int val){ j = val; }
+
     public static long getFileSize(String file){
         InputStream r = new LineInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
         return r.size();
@@ -72,6 +76,7 @@ public class MethodContainer {
         while (!r.end_of_stream()) {
             length = length + r.readln().length();
         }
+        r.close();
         return length;
     }
 
@@ -83,6 +88,7 @@ public class MethodContainer {
         while (!r.end_of_stream()) {
             length = length + r.readln().length();
         }
+        r.close();
         return length;
     }
 
@@ -94,88 +100,56 @@ public class MethodContainer {
         while (!r.end_of_stream()) {
             length = length + r.readln().length();
         }
+        r.close();
         return length;
     }
 
     public static long mappingRead() {
         InputStream r;
-        r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B1);
+        r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, B2);
         long length = 0;
-
         while (!r.end_of_stream()) {
             length = length + r.readln().length();
         }
+        r.close();
         return length;
-
     }
 
+    public static int randjump(InputStream sreader){
+        int sum = 0;
+        Random rand = new Random();
+        int fileLen = (int)sreader.size();
+        //System.out.println("For j = "+j);
+        for(int i=0;i<j;i++){
+            int r = rand.nextInt(fileLen);
+            sreader.seek(r);
+            String s = sreader.readln();
+            //System.out.println("i#"+i+": "+s);
+            sum+=s.length();
+            //sum+=sreader.readln().length();
+        }
+        return sum;
+    }
 
-
-     public static int mapping_readRandom(){
-        InputStream r;
-        r = new MappedInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME,B1);
-        int length = 0 ;
-        String OutString ;
-         Random x= new Random();
-          long p=r.size();
-          int X = x.nextInt((int)p);//we can change this 
-          System.out.println(X);
-         r.seek(X);
-        while ( ! r.end_of_stream()){
-            length = length+ r.readln().length() ;
-        }
-         return length ; 
-         }
-     
-      public static int Line_readRandom (){
-        InputStream r;
-        r = new LineInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
-        r.size();
-         int length = 0 ;
-         String OutString ;
-          Random x= new Random();
-          long p=r.size();
-          int X = x.nextInt((int)p);//we can change this 
-          System.out.println(X);
-         r.seek(X);
-        while ( ! r.end_of_stream()){
-          length = length+ r.readln().length() ;
-        }
-        return length ;
-        }
+    public static int lineRandomRead() {
+        InputStream r = new LineInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME);
+        return randjump(r);
+    }
       
-      public static int char_readRandom(){
-        InputStream r;
-        r = new CharInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
-        int length = 0 ;
-        String OutString ;
-          Random x= new Random();
-          long p=r.size();
-          int X = x.nextInt((int)p);//we can change this 
-          System.out.println(X);
-         r.seek(X);
-        while ( ! r.end_of_stream()){
-            length = length+ r.readln().length() ;
-        }
-         return length ;
-    } 
-     
-       public static int Buffer_readRandom(){
-        InputStream r;
-        r = new BufferedCharInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME,B1);
-        int length = 0 ;
-        String OutString ;
-          Random x= new Random();
-          long p=r.size();
-          int X = x.nextInt((int)p);//we can change this 
-          System.out.println(X);
-         r.seek(X);
-        while ( ! r.end_of_stream()){
-            length = length+ r.readln().length() ;
-        }
-         return length ;
+    public static int charRandomRead(){
+        InputStream r = new CharInputStream(INPUT_FOLDER_PATH+INPUT_FILE_NAME);
+        return randjump(r);
     }
-       
+
+    public static int bufferRandomRead(int b) {
+        InputStream r = new BufferedCharInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, b);
+        return randjump(r);
+    }
+
+    public static int mappingRandomRead(int b) {
+        InputStream r = new MappedInputStream(INPUT_FOLDER_PATH + INPUT_FILE_NAME, b);
+        return randjump(r);
+    }
        //we have to read all the files that we have and put them in one file with this method 
        //so we can look how to change tha path method
        

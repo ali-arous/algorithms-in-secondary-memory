@@ -10,8 +10,6 @@ package algorithmsinsecondarymemory;
  * @author webma
  */
 
-import java.lang.invoke.MethodHandle;
-
 /**
  * This class serves as a container for all experiment, where each experiment
  * is defined in side a static method, and called in the Main class.
@@ -20,7 +18,7 @@ import java.lang.invoke.MethodHandle;
 public class ExperimentsSet {
 
     static String FolderPath = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\";
-    static String[] listOfFiles = {"keyword.csv","company_name.csv","title.csv", "cast_info.csv"};
+    static String[] listOfFiles = {"keyword.csv","company_name.csv"};//,"title.csv", "cast_info.csv"};
 
     public static void init(){
         System.out.println("Initializing Experiments Set..");
@@ -44,27 +42,42 @@ public class ExperimentsSet {
             st = System.currentTimeMillis(); output = MethodContainer.lineRead(); ed = System.currentTimeMillis();
             System.out.println("\n    Method: [Line Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
 
-            int[] bVal={0,0,0,0,0};
+            int[] bVal={0,0,0,0,0,0};
+            //int[] bVal={88633571,44316785,22158392,11079196,5539598,346224};
             bVal[0] = (int)((size/100.0) * 0.001);
             bVal[1] = (int)((size/100.0) * 0.1);
-            bVal[2] = (int)((size/100.0) * 10);
-            bVal[3] = (int)((size/100.0) * 50);
+            bVal[2] = (int)((size/100.0) * 10) + 1;
+            bVal[3] = (int)((size/100.0) * 50) + 1;
             bVal[4] = (int)((size/100.0) * 100);
+            bVal[5] = 1024;
 
             System.out.println("\n    Method: [Buffered Reader]");
             for(int b: bVal){
+                //b = 709068570 ;
+                //b = 354534285;
+                //b = 177267142;
+                //b = 204800;
                 MethodContainer.setB1(b);
                 st = System.currentTimeMillis(); output = MethodContainer.bufferRead(); ed = System.currentTimeMillis();
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
+                //break;
             }
 
             System.out.println("\n    Method: [Mapped Reader]");
             for(int b: bVal){
+                //b = 1418137140;
+                //b = 709068570;
+                //b = 354534285;
+                //b = 177267142;
+                //b = 88633571;
+                //b = 1418;
                 MethodContainer.setB2(b);
                 st = System.currentTimeMillis(); output = MethodContainer.mappingRead(); ed = System.currentTimeMillis();
                 System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
+            //break;
             }
             System.out.println("---------------------------------------------\n\n");
+            break;
         }
 
 
@@ -96,37 +109,58 @@ public class ExperimentsSet {
 
     }
 
-    public static void Random_reading(int i,int j){
-         if(i<1 || i>4){
+    public static void random_reading(){
+        System.out.println("Running Experiment#2: [Random Reading]");
 
-            System.out.println("The number of method to be tested should be in {1,2,3,4}");
-            return;
-        }
+        for(String fileName:listOfFiles){
+            MethodContainer.setInputFileName(fileName);
+            long size = MethodContainer.getFileSize(fileName);
 
-       if(i==1){
-           for (int k=1 ;k<=j;k++){
-           int E1= MethodContainer.Line_readRandom();
-           System.out.println("this method is the line reader random");
-           System.out.println(E1);
-           }
+            int[] jVal={0,0,0,0};
+            jVal[0] = (int)((size/100.0) * 0.001);
+            jVal[1] = (int)((size/100.0) * 0.1);
+            jVal[2] = (int)((size/100.0) * 10);
+            jVal[3] = (int)((size/100.0) * 50);
 
-        } else if(i==2){
-             for (int k=1 ;k<=j;k++){
-          int E= MethodContainer.char_readRandom();
-          System.out.println("this method is the char reader random");
-           System.out.println(E);
-             }
-        } else if(i==3){
-            for (int k=1 ;k<=j;k++){
-                int E= MethodContainer.Buffer_readRandom();
-                System.out.println("this method is the buffer reader random");
-                System.out.println(E);}
-        } else{
-          for (int k=1 ;k<=j;k++){
-           int E= MethodContainer.mapping_readRandom();
-           System.out.println("this method is the mappin reader random");
-           System.out.println(E);
-          }
+            System.out.println("\nConsidering File: ["+fileName+"]  Of Size: ["+size+"] Byte");
+            long output=0, st=0, ed=0;
+
+            System.out.println("\n    Method: [Char Reader]");
+            for(int j: jVal){
+                MethodContainer.setJ(j);
+                st = System.currentTimeMillis(); output = MethodContainer.charRandomRead(); ed = System.currentTimeMillis();
+                System.out.println("            | j = "+j+" |  OUPUT: "+output+",  Time: "+(ed-st));
+
+            }
+
+//
+            System.out.println("\n    Method: [Line Reader]");
+            for(int j: jVal){
+                MethodContainer.setJ(j);
+                st = System.currentTimeMillis(); output = MethodContainer.lineRandomRead(); ed = System.currentTimeMillis();
+                System.out.println("            | j = "+j+" |  OUPUT: "+output+",  Time: "+(ed-st));
+
+            }
+
+
+            int b = (int)((size/100.0) * 0.1);
+            System.out.println("\n    Method: [Buffered Reader]");
+            for(int j: jVal){
+                MethodContainer.setJ(j);
+                st = System.currentTimeMillis(); output = MethodContainer.bufferRandomRead(b); ed = System.currentTimeMillis();
+                System.out.println("            | j = "+j+" |  OUPUT: "+output+",  Time: "+(ed-st));
+                //break;
+            }
+
+            System.out.println("\n    Method: [Mapped Reader]");
+            for(int j: jVal){
+                MethodContainer.setJ(j);
+                st = System.currentTimeMillis(); output = MethodContainer.mappingRandomRead(b); ed = System.currentTimeMillis();
+                System.out.println("            | j = "+j+" |  OUPUT: "+output+",  Time: "+(ed-st));
+                //break;
+            }
+            System.out.println("---------------------------------------------\n\n");
+
         }
     }
 

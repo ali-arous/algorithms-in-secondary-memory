@@ -34,7 +34,8 @@ public class AlgorithmsInSecondaryMemory {
         ExperimentsSet.init();
 
         // experiment #1
-        ExperimentsSet.sequential_reading();
+        //ExperimentsSet.sequential_reading();
+        ExperimentsSet.random_reading();
 
 
 

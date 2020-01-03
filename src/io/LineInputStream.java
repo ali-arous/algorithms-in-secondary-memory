@@ -54,4 +54,13 @@ public class LineInputStream extends InputStream{
         }
         return "";
     }
+
+    public void close(){
+        try{
+            br.close();
+        }catch(IOException ex){
+            System.err.println(ex.getMessage());
+        }
+        super.close();
+    }
 }

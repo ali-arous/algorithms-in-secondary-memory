@@ -72,4 +72,14 @@ public abstract class InputStream {
     public boolean end_of_stream(){
         return this.endOfStream;
     }
+
+    public void close(){
+        try{
+            reader.close();
+            f.close();
+        }catch(IOException ex){
+            System.err.println(ex.getMessage());
+        }
+
+    }
 }

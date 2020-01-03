@@ -99,7 +99,7 @@ public class MappedInputStream extends InputStream{
                 segment = this.fileSize - (round*B+pos);
                 if (segment>0 && segment<B)
                     this.buff  = fc.map(FileChannel.MapMode.READ_ONLY, round*B+pos, segment);
-                else if(segment > B)
+                else if(segment >= B)
                     this.buff  = fc.map(FileChannel.MapMode.READ_ONLY, round*B+pos, B);
                 else{
                     this.endOfStream=true;
@@ -110,8 +110,18 @@ public class MappedInputStream extends InputStream{
             System.err.println("The following error is encountred while reading the file:\n"+ex.getMessage());
             }
         }
-        if(this.fileSize - (round*B+pos-this.buff.remaining())==0)
-            this.endOfStream=true;
+        if(this.fileSize - (round*B+pos-this.buff.remaining())==0) {
+            this.endOfStream = true;
+        }
         return new String(s.toByteArray());
+    }
+
+    public void close(){
+        try{
+            fc.close();
+            //f.close();
+        }catch(IOException ex){
+            System.err.println(ex.getMessage());
+        }
     }
 }
