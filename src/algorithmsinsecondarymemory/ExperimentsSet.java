@@ -29,82 +29,62 @@ public class ExperimentsSet {
     public static void sequential_reading(){
         System.out.println("Running Experiment#1: [Sequential Reading]");
 
-        for(String fileName:listOfFiles){
+        for(String fileName:listOfFiles) {
             MethodContainer.setInputFileName(fileName);
             long size = MethodContainer.getFileSize(fileName);
 
-            System.out.println("\nConsidering File: ["+fileName+"]  Of Size: ["+size+"] Byte");
-            long output=0, st=0, ed=0;
+            System.out.println("\nConsidering File: [" + fileName + "]  Of Size: [" + size + "] Byte");
+            long output = 0, st = 0, ed = 0;
 
-            st = System.currentTimeMillis(); output = MethodContainer.charRead(); ed = System.currentTimeMillis();
-            System.out.println("\n    Method: [Char Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
+            st = System.currentTimeMillis();
+            output = MethodContainer.charRead();
+            ed = System.currentTimeMillis();
+            System.out.println("\n    Method: [Char Reader]  |  OUPUT: " + output + ",  Time: " + (ed - st));
 
-            st = System.currentTimeMillis(); output = MethodContainer.lineRead(); ed = System.currentTimeMillis();
-            System.out.println("\n    Method: [Line Reader]  |  OUPUT: "+output+",  Time: "+(ed-st));
+            st = System.currentTimeMillis();
+            output = MethodContainer.lineRead();
+            ed = System.currentTimeMillis();
+            System.out.println("\n    Method: [Line Reader]  |  OUPUT: " + output + ",  Time: " + (ed - st));
 
-            int[] bVal={0,0,0,0,0,0};
+            int[] bVal = {0, 0, 0, 0, 0, 0};
             //int[] bVal={88633571,44316785,22158392,11079196,5539598,346224};
-            bVal[0] = (int)((size/100.0) * 0.001);
-            bVal[1] = (int)((size/100.0) * 0.1);
-            bVal[2] = (int)((size/100.0) * 10) + 1;
-            bVal[3] = (int)((size/100.0) * 50) + 1;
-            bVal[4] = (int)((size/100.0) * 100);
+            bVal[0] = (int) ((size / 100.0) * 0.001);
+            bVal[1] = (int) ((size / 100.0) * 0.1);
+            bVal[2] = (int) ((size / 100.0) * 10) + 1;
+            bVal[3] = (int) ((size / 100.0) * 50) + 1;
+            bVal[4] = (int) ((size / 100.0) * 100);
             bVal[5] = 1024;
 
             System.out.println("\n    Method: [Buffered Reader]");
-            for(int b: bVal){
+            for (int b : bVal) {
                 //b = 709068570 ;
                 //b = 354534285;
                 //b = 177267142;
                 //b = 204800;
-                st = System.currentTimeMillis(); output = MethodContainer.bufferRead(b); ed = System.currentTimeMillis();
-                System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
+                st = System.currentTimeMillis();
+                output = MethodContainer.bufferRead(b);
+                ed = System.currentTimeMillis();
+                System.out.println("            | B = " + b + " |  OUPUT: " + output + ",  Time: " + (ed - st));
                 //break;
             }
 
             System.out.println("\n    Method: [Mapped Reader]");
-            for(int b: bVal){
+            for (int b : bVal) {
                 //b = 1418137140;
                 //b = 709068570;
                 //b = 354534285;
                 //b = 177267142;
                 //b = 88633571;
                 //b = 1418;
-                st = System.currentTimeMillis(); output = MethodContainer.mappingRead(b); ed = System.currentTimeMillis();
-                System.out.println("            | B = "+b+" |  OUPUT: "+output+",  Time: "+(ed-st));
-            //break;
+                st = System.currentTimeMillis();
+                output = MethodContainer.mappingRead(b);
+                ed = System.currentTimeMillis();
+                System.out.println("            | B = " + b + " |  OUPUT: " + output + ",  Time: " + (ed - st));
+                //break;
             }
             System.out.println("---------------------------------------------\n\n");
             break;
         }
-
-
-//
-//      if(i<1 || i>4){
-//            System.out.println("The number of method to be tested should be in {1,2,3,4}");
-//            return;
-//        }
-//       if(i==1){
-//           int E1= MethodContainer.lineRead();
-//           System.out.println("this method is the line reader");
-//           System.out.println(E1);
-//
-//        } else if(i==2){
-//          int E= MethodContainer.charRead();
-//          System.out.println("this method is the char reader");
-//           System.out.println(E);
-//        } else if(i==3){
-//         int E= MethodContainer.bufferRead();
-//           System.out.println("this method is the buffer reader");
-//           System.out.println(E);
-//        } else{
-//           int E= MethodContainer.mappingRead();
-//           System.out.println("this method is the mappin reader");
-//           System.out.println(E);
-//        }
-
-
-
     }
 
     public static void random_reading(){
