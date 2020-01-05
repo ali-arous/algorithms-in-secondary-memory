@@ -39,12 +39,12 @@ public class ExperimentsSet {
             st = System.currentTimeMillis();
             output = MethodContainer.charRead();
             ed = System.currentTimeMillis();
-            System.out.println("\n    Method: [Char Reader]  |  OUTPUT: " + output + ",  Time: " + (ed - st));
+            System.out.println("\n    Method: [Char Reader]  |  OUTPUT : " + output + ",  Time: " + (ed - st));
 
             st = System.currentTimeMillis();
             output = MethodContainer.lineRead();
             ed = System.currentTimeMillis();
-            System.out.println("\n    Method: [Line Reader]  |  OUTPUT: " + output + ",  Time: " + (ed - st));
+            System.out.println("\n    Method: [Line Reader]  |  OUTPUT : " + output + ",  Time: " + (ed - st));
 
             int[] bVal = {0, 0, 0, 0, 0, 0};
             //int[] bVal={88633571,44316785,22158392,11079196,5539598,346224};
@@ -64,7 +64,7 @@ public class ExperimentsSet {
                 st = System.currentTimeMillis();
                 output = MethodContainer.bufferRead(b);
                 ed = System.currentTimeMillis();
-                System.out.println("            | B = " + b + " |  OUTPUT: " + output + ",  Time: " + (ed - st));
+                System.out.println("            | B = " + b + " |  OUTPUT : " + output + ",  Time: " + (ed - st));
                 //break;
             }
 
@@ -79,7 +79,7 @@ public class ExperimentsSet {
                 st = System.currentTimeMillis();
                 output = MethodContainer.mappingRead(b);
                 ed = System.currentTimeMillis();
-                System.out.println("            | B = " + b + " |  OUTPUT: " + output + ",  Time: " + (ed - st));
+                System.out.println("            | B = " + b + " |  OUTPUT : " + output + ",  Time: " + (ed - st));
                 //break;
             }
             System.out.println("---------------------------------------------\n\n");
