@@ -164,7 +164,7 @@ public class ExperimentsSet {
 
     public static void compined_reading_writing(){
         System.out.println("Running Experiment#3: [Combined Reading & Writing]");
-        String[] testingFiles = {"keyword.csv", "company_name.csv", "movie_info_idx.csv", "movie_companies.csv"};//, "title.csv", "cast_info.csv"};
+        String[] testingFiles = {"keyword.csv", "company_name.csv", "movie_info_idx.csv", "movie_companies.csv", "title.csv", "cast_info.csv"};
 
         MethodContainer.setOutputFolderPath("C:\\Users\\webma\\Documents\\NetBeansProjects\\Ali\\");
         MethodContainer.clearOutputFolder();
@@ -176,23 +176,23 @@ public class ExperimentsSet {
         long st=0, ed=0;
         MethodContainer.setB2(128);
 
-//        st = System.currentTimeMillis();
-//        MethodContainer.mappedReaderLineWriter(testingFiles);
-//        ed = System.currentTimeMillis();
-//        System.out.print("MappedReader | LineWriter: ");
-//        System.out.println(""+(ed-st)/1000.0+" seconds");
-//
-//
-//        st = System.currentTimeMillis();
-//        MethodContainer.mappedReaderCharWriter(testingFiles);
-//        ed = System.currentTimeMillis();
-//        System.out.print("MappedReader | CharWriter: ");
-//        System.out.println(""+(ed-st)/1000.0+" seconds");
-//
+        st = System.currentTimeMillis();
+        MethodContainer.mappedReaderLineWriter(testingFiles);
+        ed = System.currentTimeMillis();
+        System.out.print("MappedReader | LineWriter: ");
+        System.out.println(""+(ed-st)/1000.0+" seconds");
 
-        int[] bVal = { 64, 512, 2048, 8192, 819200, 8192000 };
+
+        st = System.currentTimeMillis();
+        MethodContainer.mappedReaderCharWriter(testingFiles);
+        ed = System.currentTimeMillis();
+        System.out.print("MappedReader | CharWriter: ");
+        System.out.println(""+(ed-st)/1000.0+" seconds");
+
+
+        int[] bVal = { 819200000,64, 512, 2048, 8192, 819200, 8192000 };
         for(int b:bVal) {
-            MethodContainer.clearOutputFolder();
+            //MethodContainer.clearOutputFolder();
             st = System.currentTimeMillis();
             int b1 = b;
             MethodContainer.mappedReaderBufferedWriter(testingFiles, b1);
@@ -209,6 +209,7 @@ public class ExperimentsSet {
             System.out.println("" + (ed - st) / 1000.0 + " seconds");
 
             System.out.println("--------------------------------------------\n");
+            break;
 //        st = System.currentTimeMillis();
 //        MethodContainer.lineReaderLineWriter(testingFiles);
 //        ed = System.currentTimeMillis();
