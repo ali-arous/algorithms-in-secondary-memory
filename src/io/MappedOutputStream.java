@@ -35,7 +35,7 @@ public class MappedOutputStream extends OutputStream{
         this.round=0;
         this.pos=0;
         this.bufferExist=false;
-        this.fileToWriteLen=-1;
+        this.fileToWriteLen=Long.MAX_VALUE;
         if(buffer>0)
             this.B = buffer;
         else
@@ -44,7 +44,7 @@ public class MappedOutputStream extends OutputStream{
     
     public MappedOutputStream(String path, int buffer){
         this(buffer);
-        System.out.println("MappedOutputStream object initiated..");
+        //System.out.println("MappedOutputStream object initiated..");
         this.create(path);
     }
     public MappedOutputStream(String path, int buffer, long len){
@@ -65,7 +65,7 @@ public class MappedOutputStream extends OutputStream{
             if(!f.exists()){
                 if(f.createNewFile()){
                     this.fc = FileChannel.open(f.toPath(),StandardOpenOption.READ,StandardOpenOption.WRITE);
-                    System.out.println("File created successfully..");
+                    //System.out.println("File created successfully..");
                 }
                 else
                     throw new IOException("File creation failed!");
@@ -89,10 +89,9 @@ public class MappedOutputStream extends OutputStream{
         if(s.length()==0)
             return;
         String ss=s;
-        s+='\n';
+        s+="\n";
         //System.out.println("\n\nTARGET: "+s);
         try {
-
             if(!bufferExist){
                 long segment = Math.min(this.fileToWriteLen-(round*B+pos), B); //System.out.println("LOOK: "+(this.fileToWriteLen-(round*B+pos))+",  "+B);
                 this.buff = this.fc.map(FileChannel.MapMode.READ_WRITE, round*B+pos, segment);
@@ -126,6 +125,10 @@ public class MappedOutputStream extends OutputStream{
             }
             while(len>0){
                 //System.out.println("[SEGMENT#2]");
+                if(this.buff.remaining()==0){
+                    long segment = Math.min(this.fileToWriteLen-(round*B+pos), B); //System.out.println("LOOK: "+(this.fileToWriteLen-(round*B+pos))+",  "+B);
+                    this.buff = this.fc.map(FileChannel.MapMode.READ_WRITE, round * B + pos, segment);
+                }
                 if(len>this.buff.remaining()){
                     int rem = buff.remaining();
                     //System.out.println("[SEGMENT#4] PUT: "+new String(Arrays.copyOfRange(bArr,0, rem)));
@@ -140,6 +143,7 @@ public class MappedOutputStream extends OutputStream{
                     this.buff = this.fc.map(FileChannel.MapMode.READ_WRITE, round * B + pos, segment);
                     //round++;
                 } else {
+                    //System.out.print("<");
                     //System.out.println("[SEGMENT#5] PUT: "+new String(bArr));
 
                     //System.out.println("CURRENT| "+String.valueOf(buff.asCharBuffer().array()));
@@ -165,7 +169,7 @@ public class MappedOutputStream extends OutputStream{
     @Override
     public void close(){
         //System.out.println("TOTAL: "+(round*B+pos));
-        System.out.println("FINAL: "+(round*B+pos));
+        //System.out.println("FINAL: "+(round*B+pos));
         this.buff.force();
         //unmap(this.buff);
         try {

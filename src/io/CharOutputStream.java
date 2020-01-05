@@ -17,7 +17,7 @@ public class CharOutputStream extends OutputStream{
     }
     public CharOutputStream(String path){
         super(path);
-        System.out.println("CharOutputStream object initiated..");
+        //System.out.println("CharOutputStream object initiated..");
     }
     
     @Override
@@ -29,7 +29,7 @@ public class CharOutputStream extends OutputStream{
             for(int i=0;i<len;i++){
                 this.writer.write(s.charAt(i));
             }
-            this.writer.write('\n');
+            this.writer.write("\r\n");
             //System.out.println("- wrote to file:  "+s);
         } catch(IOException ex){
             System.err.println("The following error is encountred while writing to the file:\n"+ex.getMessage());

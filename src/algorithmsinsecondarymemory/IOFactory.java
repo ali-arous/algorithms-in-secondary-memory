@@ -24,12 +24,18 @@ import io.MappedOutputStream;
 public class IOFactory {
     private String method;
     private int B;
+    private long outFileSize = -1;
     public IOFactory(String method){
         this.method= method;
     }
     public IOFactory(String method, int B){
         this.method=method;
         this.B = B;
+    }
+    public IOFactory(String method, int B, long outFileSize){
+        this.method=method;
+        this.B = B;
+        this.outFileSize = outFileSize;
     }
     public InputStream makeReader(String fullPath){
         if(method=="CharStream" || method=="1")
@@ -54,7 +60,10 @@ public class IOFactory {
         else if(method=="BufferedCharStream" || method=="3")
             return new BufferedCharOutputStream(fullPath, B);
         else if(method=="MappedStream" || method=="4")
-            return new MappedOutputStream(fullPath, B);
+            if(this.outFileSize == -1)
+                return new MappedOutputStream(fullPath, B);
+            else
+                return new MappedOutputStream(fullPath, B, outFileSize);
         else{
             System.out.println("Error! No compatible OutputStream matched..");
             return null;

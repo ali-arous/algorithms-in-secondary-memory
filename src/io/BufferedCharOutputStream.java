@@ -20,7 +20,7 @@ public class BufferedCharOutputStream extends OutputStream{
     public BufferedCharOutputStream(int buffer){
         this.setBufferSize(buffer);
         this.buff = CharBuffer.allocate(B);
-        System.out.println("BufferedCharOutputStream object initiated..");
+        //System.out.println("BufferedCharOutputStream object initiated..");
     }
     
     public BufferedCharOutputStream(String path, int buffer){
@@ -41,7 +41,7 @@ public class BufferedCharOutputStream extends OutputStream{
             if(!f.exists()){
                 if(f.createNewFile()){
                     this.swriter = new OutputStreamWriter(new FileOutputStream(f));
-                    System.out.println("File created successfully..");
+                    //System.out.println("File created successfully..");
                 }
                 else
                     throw new IOException("File creation failed!");
@@ -72,7 +72,7 @@ public class BufferedCharOutputStream extends OutputStream{
         }
         if(s.length()==0)
             return;
-        s+="\n";
+        s+="\r\n";
 
         for(char c: s.toCharArray()){
             buff.put(c);

@@ -22,7 +22,7 @@ public class LineOutputStream extends OutputStream{
     
     public LineOutputStream(String path){
         super(path);
-        System.out.println("LineOutputStream object initiated..");
+        //System.out.println("LineOutputStream object initiated..");
         this.bw = new BufferedWriter(this.writer);
     }
     
