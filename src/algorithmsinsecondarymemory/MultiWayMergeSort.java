@@ -7,6 +7,8 @@ package algorithmsinsecondarymemory;
 
 import io.InputStream;
 import io.OutputStream;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -31,7 +33,7 @@ public class MultiWayMergeSort {
     
     private static final String INPUT_FOLDER_PATH = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\";
     
-    private static final String OUTPUT_FOLDER_PATH = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\outputs\\";
+    private static  String OUTPUT_FOLDER_PATH = "C:\\Users\\webma\\Desktop\\BDMA\\Database Architecture\\Assignment\\outputs\\";
     
     private InputStream r;
     private OutputStream w;
@@ -54,6 +56,9 @@ public class MultiWayMergeSort {
     }
     
     public void exsort(String f, int k, int M, int d){
+        this.OUTPUT_FOLDER_PATH = this.OUTPUT_FOLDER_PATH + "/"+f+"_k"+k+"_M"+M+"_d"+d+"/";
+        File fout = new File(OUTPUT_FOLDER_PATH);
+        fout.mkdir();
         // open input file for reading
         r = factory.makeReader(INPUT_FOLDER_PATH+f);
         //r = new LineInputStream(INPUT_FOLDER_PATH+f);

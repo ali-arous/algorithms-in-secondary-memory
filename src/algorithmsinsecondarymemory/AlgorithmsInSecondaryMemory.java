@@ -36,7 +36,8 @@ public class AlgorithmsInSecondaryMemory {
         // experiment #1
         //ExperimentsSet.sequential_reading();
         //ExperimentsSet.random_reading();
-        ExperimentsSet.compined_reading_writing();
+        //ExperimentsSet.compined_reading_writing();
+        ExperimentsSet.multi_way_merge_sort();
 
 
 

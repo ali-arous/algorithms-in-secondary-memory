@@ -249,47 +249,16 @@ public class ExperimentsSet {
 
 
 
+    public static void multi_way_merge_sort(){
+        String file = "title_ordered.csv";
 
+        long st=0, ed=0;
+        MultiWayMergeSort mwms = new MultiWayMergeSort("LineStream");
 
+        st = System.currentTimeMillis();
+        mwms.exsort(file, 0, 100000, 20);
+        ed = System.currentTimeMillis();
 
-
-
-    public static void combined_reading_and_writing(int i){
-         if(i<1 || i>4){
-            System.out.println("The number of method to be tested should be in {1,2,3,4}");
-            return;
-        }
-       if(i==1){
-           MethodContainer.line_read_write();
-           System.out.println("this method is the line reader wrieter with one file");
-
-        } else if(i==2){
-          MethodContainer.char_read_write();
-          System.out.println("this method is the char reader wrieter with one file");
-        } else if(i==3){
-         MethodContainer.buffer_read_write();
-           System.out.println("this method is the buffer reader wrieter with one file");
-
-        } else if(i==4){
-           MethodContainer.mapping_read_write();
-           System.out.println("this method is the mappin wrieter with one file");
-
-        }else if(i==5){
-            MethodContainer.line_read_write_All();
-            System.out.println("this method is the line reader wrieter Of ALL file");
-        }else if(i==6){
-             MethodContainer.char_read_write_All();
-             System.out.println("this method is the char reader wrieter Of ALL file");
-        }else if (i==7){
-           MethodContainer.buffer_read_write_All();
-           System.out.println("this method is the buffer reader wrieter Of ALL file");
-        }else{
-           MethodContainer.mapping_read_write_ALl();
-           System.out.println("this method is the mappin wrieter Of ALL file");
-        }
-    }
-
-    public static void Multi_way_merge(){
-        // code for experiment 4
+        System.out.println("" + (ed - st) / 1000.0 + " seconds");
     }
 }
