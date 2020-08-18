@@ -250,15 +250,22 @@ public class ExperimentsSet {
 
 
     public static void multi_way_merge_sort(){
-        String file = "title_ordered.csv";
+
+        String file = "title.csv";
+        String[] testingFiles = {"keyword.csv", "company_name.csv", "movie_info_idx.csv", "movie_companies.csv", "cast_info.csv"};
 
         long st=0, ed=0;
         MultiWayMergeSort mwms = new MultiWayMergeSort("LineStream");
+        int[] dVal = {10, 100, 1000, 10000, 100000, 1000000, 10000000};
 
-        st = System.currentTimeMillis();
-        mwms.exsort(file, 0, 100000, 20);
-        ed = System.currentTimeMillis();
+        for(String fname: testingFiles){
+            System.out.println("\n\nFile: "+fname);
+            st = System.currentTimeMillis();
+            mwms.exsort(file, 0, 1000000000, 10000);
+            ed = System.currentTimeMillis();
 
-        System.out.println("" + (ed - st) / 1000.0 + " seconds");
+            System.out.println("" + (ed - st) / 1000.0 + " seconds");
+        }
+
     }
 }
